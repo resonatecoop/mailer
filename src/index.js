@@ -42,6 +42,7 @@ const ajv = new AJV({
 const validate = ajv.compile({
   type: 'object',
   additionalProperties: false,
+  required: ['token', 'email', 'message', 'reason'],
   properties: {
     token: {
       type: 'string'
