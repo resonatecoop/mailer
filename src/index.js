@@ -137,10 +137,17 @@ app.use(async ctx => {
     ctx.throw(400, `${dataPath}: ${message}`)
   }
 
-  await axios.post('https://www.google.com/recaptcha/api/siteverify', {
-    secret: process.env.RECAPTCHA_SECRET,
-    token: body.token
-  })
+  const params = new URLSearchParams()
+  params.append('response', body.token)
+  params.append('secret', process.env.HCAPTCHA_SECRET)
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+
+  await axios.post('https://hcaptcha.com/siteverify', params, config)
 
   sendEmailQueue.add({
     template: 'contact',
