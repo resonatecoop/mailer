@@ -4,4 +4,4 @@
 
 - Send emails using nodemailer (mailgun)
 - Job queue (bull)
-- Recaptcha
+- ~~Recaptcha~~ ** [hcaptcha](hcaptcha.com) **
