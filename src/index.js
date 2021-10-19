@@ -1,4 +1,6 @@
-import '@babel/polyfill'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+
 import Koa from 'koa'
 import koalogger from 'koa-logger'
 import cors from '@koa/cors'
@@ -18,6 +20,7 @@ import {
   REDIS_CONFIG
 } from './config/redis'
 import { verify } from 'hcaptcha'
+import addFormats from 'ajv-formats'
 
 const logger = winston.createLogger({
   level: 'info',
@@ -39,6 +42,9 @@ const ajv = new AJV({
   allErrors: true,
   removeAdditional: true
 })
+
+addFormats(ajv)
+
 const validate = ajv.compile({
   type: 'object',
   additionalProperties: false,
