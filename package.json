@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
+    "dev": "babel-node -r ./node_modules/dotenv-safe/config ./server.dev.js",
     "build": "babel src -d lib",
     "run-all-tests": "npm-run-all test:*",
     "test": "standard src && npm run test-deps && npm run test:locate",
