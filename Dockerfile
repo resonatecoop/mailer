@@ -1,15 +1,28 @@
-FROM node:12-alpine AS builder
+ARG RELEASE_TAG=development
+ARG NODE_ENV=development
 
-RUN mkdir -p /var/www/api
-WORKDIR /var/www/api
+FROM node:14-alpine AS builder
 
-COPY . .
+WORKDIR /build
 
-FROM node:12-alpine
+ARG RELEASE_TAG
 
-RUN mkdir -p /var/www/api/dist
+RUN apk --no-cache add git
 
-WORKDIR /var/www/api
+RUN git clone --branch ${RELEASE_TAG} --single-branch --depth 1 https://github.com/resonatecoop/mailer
+
+ENV NODE_ENV development
+
+RUN npm install
+
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+
+RUN npm run build
+
+FROM node:14-alpine
+
+WORKDIR /build
 
 COPY .env ./
 COPY .env.example ./
@@ -17,8 +30,11 @@ COPY ./package* ./
 COPY ./index.js ./
 COPY ./server.js ./
 
-COPY --from=builder /var/www/api/node_modules ./node_modules
-COPY --from=builder /var/www/api/lib ./lib
+COPY --from=builder /build/node_modules ./node_modules
+COPY --from=builder /build/lib ./lib
+
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
 
 EXPOSE 3000
 
