@@ -26,14 +26,13 @@ FROM node:14-alpine
 
 WORKDIR /build
 
-COPY .env ./
-COPY .env.example ./
-COPY ./package* ./
-COPY ./index.js ./
-COPY ./server.js ./
+COPY --from=builder /build/mailer/env.example ./
+COPY --from=builder /build/mailer/package* ./
+COPY --from=builder /build/mailer/index.js ./
+COPY --from=builder /build/mailer/server.js ./
 
-COPY --from=builder /build/node_modules ./node_modules
-COPY --from=builder /build/lib ./lib
+COPY --from=builder /build/mailer/node_modules ./node_modules
+COPY --from=builder /build/mailer/lib ./lib
 
 ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
