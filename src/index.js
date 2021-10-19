@@ -145,7 +145,7 @@ app.use(async ctx => {
   sendEmailQueue.add({
     template: 'contact',
     message: {
-      to: 'auggod@resonate.is',
+      to: process.env.MAILGUN_RECIPIENT,
       from: body.email,
       replyTo: body.email
     },
