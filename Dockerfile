@@ -26,7 +26,7 @@ FROM node:14-alpine
 
 WORKDIR /build
 
-COPY --from=builder /build/mailer/env.example ./
+COPY --from=builder /build/mailer/.env.example ./
 COPY --from=builder /build/mailer/package* ./
 COPY --from=builder /build/mailer/index.js ./
 COPY --from=builder /build/mailer/server.js ./
