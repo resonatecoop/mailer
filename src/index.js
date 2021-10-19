@@ -5,7 +5,6 @@ import cors from '@koa/cors'
 
 import koaBody from 'koa-body'
 import Redis from 'ioredis'
-import axios from 'axios'
 import AJV from 'ajv'
 import compress from 'koa-compress'
 import error from 'koa-json-error'
@@ -18,6 +17,7 @@ import sendEmailJob from './jobs/send-mail'
 import {
   REDIS_CONFIG
 } from './config/redis'
+import { verify } from 'hcaptcha'
 
 const logger = winston.createLogger({
   level: 'info',
@@ -137,17 +137,10 @@ app.use(async ctx => {
     ctx.throw(400, `${dataPath}: ${message}`)
   }
 
-  const params = new URLSearchParams()
-  params.append('response', body.token)
-  params.append('secret', process.env.HCAPTCHA_SECRET)
+  const { token } = body
+  const secret = process.env.HCAPTCHA_SECRET
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }
-
-  await axios.post('https://hcaptcha.com/siteverify', params, config)
+  await verify(secret, token)
 
   sendEmailQueue.add({
     template: 'contact',
