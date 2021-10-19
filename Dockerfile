@@ -13,6 +13,8 @@ RUN git clone --branch ${RELEASE_TAG} --single-branch --depth 1 https://github.c
 
 ENV NODE_ENV development
 
+WORKDIR /build/mailer
+
 RUN npm install
 
 ARG NODE_ENV
