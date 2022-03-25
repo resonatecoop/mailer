@@ -5,11 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "babel-node -r ./node_modules/dotenv-safe/config ./server.dev.js",
+    "start": "node -r ./node_modules/dotenv-safe/config ./lib/server.js",
+    "dev": "babel-node -r ./node_modules/dotenv-safe/config ./src/server.js",
     "build": "babel src -d lib",
     "run-all-tests": "npm-run-all test:*",
-    "test": "standard src && npm run test-deps",
+    "test": "npm run test:lint && npm run test:deps",
+    "test:lint": "standard src",
     "test:deps": "dependency-check --verbose --missing ./lib/**/*.js --no-dev --i dotenv-safe"
   },
   "keywords": [
