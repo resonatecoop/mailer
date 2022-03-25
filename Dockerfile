@@ -29,7 +29,6 @@ WORKDIR /build
 COPY --from=builder /build/mailer/.env.example ./
 COPY --from=builder /build/mailer/package* ./
 COPY --from=builder /build/mailer/index.js ./
-COPY --from=builder /build/mailer/server.js ./
 
 COPY --from=builder /build/mailer/node_modules ./node_modules
 COPY --from=builder /build/mailer/lib ./lib
