@@ -166,6 +166,8 @@ app.use(async ctx => {
   ctx.status = 202
 
   ctx.body = {
+    status: ctx.status,
+    data: body,
     message: 'Your message is on its way'
   }
 })
